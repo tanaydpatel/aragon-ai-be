@@ -68,6 +68,85 @@ class BoardService {
   }
 
   /**
+   * Add a task to a column.
+   * @param {Object} options - The options for adding the task.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {string} options.columnId - The ID of the column.
+   * @param {Object} options.task - The task to be added.
+   * @returns {Object} The updated board.
+   */
+  async addTaskToColumn({ boardId, columnId, task }) {
+    const board = await this.model.findOneAndUpdate(
+      { boardId, userId: this.userId, 'columns.columnId': columnId },
+      {
+        $push: {
+          'columns.$.tasks': task,
+        },
+      },
+      { new: true },
+    );
+    return board;
+  }
+
+  /**
+   * Update a task in a column.
+   * @param {Object} options - The options for updating the task.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {string} options.columnId - The ID of the column.
+   * @param {string} options.taskId - The ID of the task.
+   * @param {Object} options.task - The updated task.
+   * @returns {Object} The updated board.
+   */
+  async updateTaskInColumn({ boardId, columnId, taskId, task }) {
+    const board = await this.model.findOneAndUpdate(
+      {
+        boardId,
+        userId: this.userId,
+        'columns.columnId': columnId,
+        'columns.tasks.taskId': taskId,
+      },
+      {
+        $set: {
+          'columns.$[column].tasks.$[task]': task,
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [
+          { 'column.columnId': columnId },
+          { 'task.taskId': taskId },
+        ],
+      },
+    );
+    return board;
+  }
+
+  /**
+   * Delete a task in a column.
+   * @param {Object} options - The options for deleting the task.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {string} options.columnId - The ID of the column.
+   * @param {string} options.taskId - The ID of the task.
+   * @returns {Object} The updated board.
+   */
+  async deleteTaskInColumn({ boardId, columnId, taskId }) {
+    const board = await this.model.findOneAndUpdate(
+      {
+        boardId,
+        userId: this.userId,
+        'columns.columnId': columnId,
+      },
+      {
+        $pull: {
+          'columns.$.tasks': { taskId },
+        },
+      },
+      { new: true },
+    );
+    return board;
+  }
+
+  /**
    * Delete a board.
    * @param {Object} options - The options for deleting the board.
    * @param {string} options.boardId - The ID of the board.
