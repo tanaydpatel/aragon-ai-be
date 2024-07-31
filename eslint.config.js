@@ -32,13 +32,19 @@ export default [
             MethodDefinition: true,
             ClassDeclaration: true,
             ArrowFunctionExpression: false,
-            FunctionExpression: true
-          }
-        }
-      ]
+            FunctionExpression: true,
+          },
+          contexts: [
+            'FunctionDeclaration',
+            'MethodDefinition:not([kind="constructor"])',
+            'ClassDeclaration',
+            'FunctionExpression',
+          ],
+        },
+      ],
     },
-    languageOptions: { globals: globals.node }
+    languageOptions: { globals: globals.node },
   },
   prettierConfig,
-  pluginJs.configs.recommended
+  pluginJs.configs.recommended,
 ];
