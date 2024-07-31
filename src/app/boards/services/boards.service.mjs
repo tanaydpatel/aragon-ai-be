@@ -1,0 +1,123 @@
+import { v4 as uuid } from 'uuid';
+
+import logger from '../../../utils/logger.mjs';
+import Board from '../models/board.model.mjs';
+import { BOARD_COLUMN_COLORS } from '../../constants.mjs';
+
+/**
+ * Represents a service for managing boards.
+ */
+class BoardService {
+  /**
+   * Constructs a new instance of the BoardService class.
+   */
+  constructor({ userId }) {
+    this.userId = userId;
+    this.logger = logger;
+    this.model = Board;
+  }
+
+  /**
+   * Create a new board.
+   * @param {Object} options - The options for creating the board.
+   * @param {string} options.name - The name of the board.
+   * @returns {Object} The created board.
+   */
+  async createBoard({ name }) {
+    const board = new this.model({
+      name,
+      userId: this.userId,
+      boardId: uuid(),
+      columns: [
+        {
+          name: 'Todo',
+          columnId: 'todo',
+          color: BOARD_COLUMN_COLORS[0],
+          tasks: [],
+        },
+        {
+          name: 'Doing',
+          columnId: 'doing',
+          color: BOARD_COLUMN_COLORS[1],
+          tasks: [],
+        },
+        {
+          name: 'Done',
+          columnId: 'done',
+          color: BOARD_COLUMN_COLORS[2],
+          tasks: [],
+        },
+      ],
+    });
+    await board.save();
+    return board.toObject();
+  }
+
+  /**
+   * List all boards for a given user.
+   * @param {Object} options - The options for listing the boards.
+   * @param {string} options.userId - The ID of the user.
+   * @returns {Array} The list of boards.
+   */
+  async listBoards() {
+    const boards = await this.model.find({ userId: this.userId });
+    if (boards.length !== 0) {
+      return boards;
+    }
+    return null;
+  }
+
+  /**
+   * Delete a board.
+   * @param {Object} options - The options for deleting the board.
+   * @param {string} options.boardId - The ID of the board.
+   * @returns {Object} The delete status.
+   */
+  async deleteBoard({ boardId }) {
+    const deleteStatus = await this.model.deleteOne({
+      boardId,
+      userId: this.userId,
+    });
+    logger.info(deleteStatus);
+    return deleteStatus;
+  }
+
+  /**
+   * Update the name of a board.
+   * @param {Object} options - The options for updating the board name.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {string} options.name - The new name of the board.
+   * @returns {Object} The updated board.
+   */
+  async updateBoardName({ boardId, name }) {
+    const board = await this.model.findOneAndUpdate(
+      { boardId, userId: this.userId },
+      { name },
+      { new: true },
+    );
+    return board;
+  }
+
+  /**
+   * Add a column to a board.
+   * @param {Object} options - The options for adding the column.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {Object} options.column - The column to be added.
+   * @returns {Object} The updated board.
+   */
+  async addColumn({ boardId, column }) {
+    const board = await this.model.findOneAndUpdate(
+      { boardId, userId: this.userId },
+      {
+        $push: {
+          columns: column,
+        },
+      },
+      { new: true },
+    );
+
+    return board;
+  }
+}
+
+export default BoardService;
