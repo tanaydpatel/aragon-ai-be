@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 
 const createBoardSchema = Yup.object({
   name: Yup.string()
-    .matches(/^[a-zA-Z]+$/, 'Invalid column name.')
+    .matches(/^[a-zA-Z0-9]+$/, 'Invalid column name.')
     .required(),
   userId: Yup.string()
     .matches(/^[a-zA-Z0-9]+$/, 'Invalid user name.')
@@ -13,7 +13,7 @@ const createBoardSchema = Yup.object({
 const boardColumnSchema = Yup.object({
   column: Yup.object({
     name: Yup.string()
-      .matches(/^[a-zA-Z]+$/, 'Invalid column name.')
+      .matches(/^[a-zA-Z0-9]+$/, 'Invalid column name.')
       .required(),
     color: Yup.string().matches(
       /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
@@ -27,8 +27,7 @@ const boardColumnSchema = Yup.object({
 
 export const verifyBoardName = async (req, res, next) => {
   const { name } = req.body;
-  const { userId } = req.params;
-
+  const { userId } = req.query;
   if (await createBoardSchema.validate({ name, userId })) {
     next();
   } else {
@@ -38,7 +37,7 @@ export const verifyBoardName = async (req, res, next) => {
 
 export const verifyBoardColumn = async (req, res, next) => {
   const { column } = req.body;
-  const { userId } = req.params;
+  const { userId } = req.query;
 
   if (await boardColumnSchema.validate({ column, userId })) {
     next();

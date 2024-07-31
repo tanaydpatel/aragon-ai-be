@@ -11,8 +11,7 @@ const success = (data, statusCode = 200) => ({
   body: {
     success: true,
     data,
-    message: 'Request successful'
-  }
+  },
 });
 
 /**
@@ -28,8 +27,8 @@ const failure = (error, statusCode = 500) => {
     body: {
       success: false,
       message: 'Something went wrong',
-      error: error?.message || 'Unknown error'
-    }
+      error: error?.message || 'Unknown error',
+    },
   };
 };
 

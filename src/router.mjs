@@ -14,8 +14,8 @@ export default function createRouter() {
     res.send('Hello world');
   });
 
-  router.use('/:userId/boards', boardsRouter);
-  router.use('/:userId/tasks', tasksRouter);
+  router.use('/boards', boardsRouter);
+  router.use('/tasks', tasksRouter);
 
   return router;
 }

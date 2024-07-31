@@ -4,8 +4,7 @@ import BoardService from '../services/boards.service.mjs';
 export const createBoard = async (req, res) => {
   try {
     const { name } = req.body;
-    const { userId } = req.params;
-
+    const { userId } = req.query;
     const boardInstance = new BoardService({ userId });
     const board = await boardInstance.createBoard({ name });
 
@@ -17,7 +16,8 @@ export const createBoard = async (req, res) => {
 
 export const getBoards = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.query;
+
     const boardInstance = new BoardService({ userId });
     const boards = await boardInstance.listBoards();
     res.status(200).send(buildResponse.success(boards));
@@ -29,7 +29,8 @@ export const getBoards = async (req, res) => {
 export const updateBoardName = async (req, res) => {
   try {
     const { name } = req.body;
-    const { boardId, userId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
 
     const boardInstance = new BoardService({ userId });
     const board = await boardInstance.updateBoardName({ boardId, name });
@@ -42,7 +43,8 @@ export const updateBoardName = async (req, res) => {
 export const addBoardColumn = async (req, res) => {
   try {
     const { column } = req.body;
-    const { boardId, userId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
 
     const boardInstance = new BoardService({ userId });
     const board = await boardInstance.addColumn({ boardId, column });
@@ -55,7 +57,8 @@ export const addBoardColumn = async (req, res) => {
 export const deleteBoardColumn = async (req, res) => {
   try {
     const { columnId } = req.body;
-    const { boardId, userId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
     const boardInstance = new BoardService({ userId });
     const board = await boardInstance.deleteColumn({ boardId, columnId });
     res.status(200).send(buildResponse.success(board));
@@ -66,7 +69,8 @@ export const deleteBoardColumn = async (req, res) => {
 
 export const deleteBoard = async (req, res) => {
   try {
-    const { boardId, userId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
     const boardInstance = new BoardService({ userId });
     const deleteStatus = await boardInstance.deleteBoard({ boardId });
     res.status(200).send(buildResponse.success(deleteStatus));

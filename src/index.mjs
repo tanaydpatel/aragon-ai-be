@@ -12,7 +12,7 @@ import connectDB from './DB/connect.mjs';
 import logger from './lib/logger.mjs';
 
 dotenv.config({
-  path: `./.env.${process.env.NODE_ENV}`
+  path: `./.env.${process.env.NODE_ENV}`,
 });
 
 // Validate required environment variables
@@ -34,8 +34,8 @@ app.use(express.json());
 // enable cors
 app.use(
   cors({
-    origin: process.env.ALLOWED_URLS.split(',')
-  })
+    origin: '*',
+  }),
 );
 
 app.use(logResponseTime);

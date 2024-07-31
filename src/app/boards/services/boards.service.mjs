@@ -61,10 +61,7 @@ class BoardService {
    */
   async listBoards() {
     const boards = await this.model.find({ userId: this.userId });
-    if (boards.length !== 0) {
-      return boards;
-    }
-    return null;
+    return boards;
   }
 
   /**

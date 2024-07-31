@@ -3,7 +3,8 @@ import TaskService from '../services/tasks.service.mjs';
 
 export const getTasks = async (req, res) => {
   try {
-    const { userId, boardId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
     const taskInstance = new TaskService({ userId, boardId });
     const tasks = await taskInstance.listTasks();
     res.status(200).send(buildResponse.success(tasks));
@@ -14,7 +15,8 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { userId, boardId } = req.params;
+    const { boardId } = req.params;
+    const { userId } = req.query;
     const { columnId, title, description, subtasks, assignee } = req.body;
 
     const taskInstance = new TaskService({ userId, boardId });
@@ -33,7 +35,8 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const { userId, boardId, taskId } = req.params;
+    const { boardId, taskId } = req.params;
+    const { userId } = req.query;
     const { columnId, title, description, subtasks, assignee } = req.body;
 
     const taskInstance = new TaskService({ userId, boardId });
@@ -53,7 +56,8 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const { userId, boardId, taskId } = req.params;
+    const { boardId, taskId } = req.params;
+    const { userId } = req.query;
     const taskInstance = new TaskService({ userId, boardId });
     const task = await taskInstance.deleteTask({ taskId });
     res.status(200).send(buildResponse.success(task));

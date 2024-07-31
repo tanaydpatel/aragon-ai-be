@@ -19,7 +19,8 @@ const taskBodySchema = Yup.object({
 
 export const verifyTask = async (req, res, next) => {
   const { columnId, title, description, subtasks, assignee } = req.body;
-  const { userId, boardId } = req.params;
+  const { boardId } = req.params;
+  const { userId } = req.query;
 
   if (
     await taskBodySchema.validate({
