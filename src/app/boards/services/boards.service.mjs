@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import logger from '../../../utils/logger.mjs';
 import Board from '../models/board.model.mjs';
 import { BOARD_COLUMN_COLORS } from '../../constants.mjs';
+import logger from '../../../lib/logger.mjs';
 
 /**
  * Represents a service for managing boards.

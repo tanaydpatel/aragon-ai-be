@@ -1,5 +1,6 @@
 import express from 'express';
 import boardsRouter from './app/boards/routes/boards.router.mjs';
+import tasksRouter from './app/tasks/routes/tasks.router.mjs';
 
 /**
  *
@@ -14,7 +15,7 @@ export default function createRouter() {
   });
 
   router.use('/:userId/boards', boardsRouter);
-  router.use('/:userId/tasks', boardsRouter);
+  router.use('/:userId/tasks', tasksRouter);
 
   return router;
 }

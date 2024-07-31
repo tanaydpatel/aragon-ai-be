@@ -1,8 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import logger from '../../../utils/logger.mjs';
 import Task from '../models/tasks.model.mjs';
 import BoardService from '../../boards/services/boards.service.mjs';
+import logger from '../../../lib/logger.mjs';
 
 /**
  * Represents a service for managing taskss.

@@ -1,3 +1,5 @@
+export const API_LOG_NAME = 'task-management-api-logs';
+
 export const SCHEMA = {
   BOARD: 'board',
   TASK: 'task',
