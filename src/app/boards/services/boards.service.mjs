@@ -106,11 +106,33 @@ class BoardService {
    * @returns {Object} The updated board.
    */
   async addColumn({ boardId, column }) {
+    const { name, color } = column;
     const board = await this.model.findOneAndUpdate(
       { boardId, userId: this.userId },
       {
         $push: {
-          columns: column,
+          columns: { name, columnId: uuid(), color, tasks: [] },
+        },
+      },
+      { new: true },
+    );
+
+    return board;
+  }
+
+  /**
+   * Delete a column from a board.
+   * @param {Object} options - The options for deleting the column.
+   * @param {string} options.boardId - The ID of the board.
+   * @param {string} options.columnId - The ID of the column.
+   * @returns {Object} The updated board.
+   */
+  async deleteColumn({ boardId, columnId }) {
+    const board = await this.model.findOneAndUpdate(
+      { boardId, userId: this.userId },
+      {
+        $pull: {
+          columns: { columnId },
         },
       },
       { new: true },

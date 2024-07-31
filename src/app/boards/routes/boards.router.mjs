@@ -1,20 +1,23 @@
 import express from 'express';
 import {
-  verifyCreateBoard,
-  verifyUpdateBoard,
+  verifyBoardName,
+  verifyBoardColumn,
 } from '../middlewares/boards.middleware.mjs';
 import {
+  addBoardColumn,
   createBoard,
   deleteBoard,
   getBoards,
-  updateBoard,
+  updateBoardName,
 } from '../controllers/boards.controller.mjs';
 
 const router = express.Router();
 
-router.get('/boards', getBoards);
-router.post('/board', verifyCreateBoard, createBoard);
-router.put('/board/:boardId', verifyUpdateBoard, updateBoard);
-router.delete('/board/:boardId', deleteBoard);
+router.get('/', getBoards);
+router.post('/', verifyBoardName, createBoard);
+router.post('/:boardId/name', verifyBoardName, updateBoardName);
+router.post('/:boardId/column', verifyBoardColumn, addBoardColumn);
+router.delete('/:boardId/column/:columnId', deleteBoard);
+router.delete('/:boardId', deleteBoard);
 
 export default router;
