@@ -1,0 +1,55 @@
+{
+  "name": "be-boilerplate-s",
+  "version": "0.1.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "main": "index.mjs",
+  "type": "module",
+  "engines": {
+    "node": ">=20.15.0 <21.0.0",
+    "npm": ">=10.7.0 <11.0.0"
+  },
+  "scripts": {
+    "dev": "set NODE_ENV=development&& nodemon src/index.mjs",
+    "test": "pm2 startOrRestart --only thedevstudio-app-alpha pm2.config.json",
+    "start": "pm2 startOrRestart --only thedevstudio-app-prod pm2.config.json",
+    "lint": "eslint src/**/*.mjs",
+    "lint:fix": "eslint src/**/*.mjs --fix --max-warnings=0",
+    "kill": "pm2 delete pm2.config.json",
+    "list": "pm2 list",
+    "logs": "pm2 logs",
+    "update-template": "set NODE_ENV=production&& babel-node src/utils/email/template/AWSTempalte.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch-logs": "^3.609.0",
+    "@aws-sdk/client-pinpoint-email": "^3.609.0",
+    "axios": "^1.7.2",
+    "compression": "^1.7.4",
+    "contentful": "^10.12.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1",
+    "mongoose": "^8.4.5",
+    "nocache": "^4.0.0",
+    "pm2": "^5.4.1",
+    "uuid": "^10.0.0",
+    "winston": "^3.13.0",
+    "winston-cloudwatch": "^6.3.0",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "eslint": "^9.6.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^48.5.2",
+    "eslint-plugin-prettier": "^5.1.3",
+    "globals": "^15.8.0",
+    "nodemon": "^3.1.4",
+    "prettier": "^3.3.2"
+  }
+}
